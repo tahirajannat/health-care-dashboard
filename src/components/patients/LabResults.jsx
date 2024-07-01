@@ -8,7 +8,7 @@ export default function LabResults({ classes }) {
       <div className="flex justify-between p-4">
         <h4 className=" text-xl font-bold">Lab Results</h4>
       </div>
-      <div className="h-52 overflow-scroll scrollbar-visible mx-4 my-2">
+      <div className="h-60 overflow-scroll scrollbar-visible mx-4 my-2">
         {/* ... */}
         <div
           className={`flex justify-between items-center py-2 px-4   ${classes}`}
