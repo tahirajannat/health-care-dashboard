@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-    <div className='bg-[#F6F7F8]'>
+    <div className='bg-[#F6F7F8] px-4 xl:px-0'>
     <HeaderMain/>
     <PatientMain/>
 

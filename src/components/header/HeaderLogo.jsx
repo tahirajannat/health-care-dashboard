@@ -1,14 +1,13 @@
-import React from 'react'
+import React from "react";
 
-export default function HeaderLogo () {
+export default function HeaderLogo() {
   return (
-    <div class="flex-shrink-0">
-    <img
-      className="object-fill max-w-full w-40"
-      src="/src/assets/TestLogo.png"
-      alt="Tech.Care logo"
-    />
-  </div>
-  )
+    <div className="flex-shrink-0 hidden xl:block">
+      <img
+        className="object-fill max-w-full w-40"
+        src="/src/assets/TestLogo.png"
+        alt="Tech.Care logo"
+      />
+    </div>
+  );
 }
-

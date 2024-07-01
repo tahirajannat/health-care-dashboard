@@ -8,7 +8,7 @@ import PatientList from "../patients/PatientList";
 export default function SidebarLeft() {
   return (
     <PageLeft>
-      <div className="bg-white shadow-sm rounded-2xl h-screen overflow-scroll">
+      <div className="bg-white shadow-sm rounded-2xl h-full overflow-scroll">
         <div className="flex justify-between mb-8 p-4"> 
           <h4 className=" text-xl font-bold">Patients</h4>
           <div className="text-left">
