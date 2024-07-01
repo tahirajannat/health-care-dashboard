@@ -36,7 +36,7 @@ const LineChart = () => {
           levels: "Higher than Average",
         },
         diastolic: {
-          value: 78,
+          value: 110,
           levels: "Lower than Average",
         },
       },
@@ -64,7 +64,7 @@ const LineChart = () => {
           levels: "Higher than Average",
         },
         diastolic: {
-          value: 110,
+          value: 105,
           levels: "Lower than Average",
         },
       },
@@ -92,7 +92,7 @@ const LineChart = () => {
           levels: "Higher than Average",
         },
         diastolic: {
-          value: 70,
+          value: 75,
           levels: "Lower than Average",
         },
       },
@@ -106,7 +106,7 @@ const LineChart = () => {
           levels: "Higher than Average",
         },
         diastolic: {
-          value: 80,
+          value: 78,
           levels: "Lower than Average",
         },
       },
@@ -191,34 +191,41 @@ const LineChart = () => {
       },
     ],
   };
-  // const labelData = data.datasets.map(
   const labelData = data.datasets.map((entry) => entry.label);
-  // console.log(labelData);
 
   const generateLegendLabels = () => {
-    const systolicLegend = labelData[0];
+    const lastMonthData = diagnosticHistory[diagnosticHistory.length - 1];
+    const lastMonthSystolicValue =
+      lastMonthData?.blood_pressure?.systolic?.value;
+
+    const lastMonthDiastolicValue =
+      lastMonthData?.blood_pressure?.diastolic?.value;
+
     const systolicMaxValue = Math.max(...systolicData);
     const systolicMinValue = Math.min(...systolicData);
-    const systolicLabel = diagnosticHistory[0].blood_pressure.systolic.levels;
-
-    const diastolicLegend = labelData[1];
     const diastolicMaxValue = Math.max(...diastolicData);
     const diastolicMinValue = Math.min(...diastolicData);
-    const diastolicLabel = diagnosticHistory[0].blood_pressure.diastolic.levels;
 
-    // Create a new object to store the legend data
+    const systolicLabel = lastMonthData?.blood_pressure?.systolic?.levels;
+    const diastolicLabel = lastMonthData?.blood_pressure?.diastolic?.levels;
+
+    const systolicLegend = labelData[0];
+    const diastolicLegend = labelData[1];
+
     const legendData = {
       systolic: {
         legend: systolicLegend,
         maxValue: systolicMaxValue,
         minValue: systolicMinValue,
         label: systolicLabel,
+        lastMonthValue: lastMonthSystolicValue,
       },
       diastolic: {
         legend: diastolicLegend,
         maxValue: diastolicMaxValue,
         minValue: diastolicMinValue,
         label: diastolicLabel,
+        lastMonthValue: lastMonthDiastolicValue,
       },
     };
 
@@ -226,11 +233,8 @@ const LineChart = () => {
   };
 
   const legendLabels = generateLegendLabels();
-  // console.log(legendLabels);
 
-  // If you need to convert it to JSON string
   const legendLabelsJson = JSON.stringify(legendLabels);
-  // console.log(legendLabelsJson);
 
   const options = {
     maintainAspectRatio: false,
@@ -309,19 +313,19 @@ const LineChart = () => {
         <div className="col-span-8">
           <div className="flex justify-between">
             <h2 className="text-base mb-3 ml-0.5">Blood Pressure</h2>
-           <div>
-           <Select />
-           </div>
+            <div>
+              <Select />
+            </div>
           </div>
-          <div style={{ height: "400px" }}>
+          <div style={{ height: "270px" }}>
             <Line ref={htmlLegendRef} data={data} options={options} />
           </div>
         </div>
         <div className="col-span-4 ">
-        {/* <div>{legendLabels.diastolic.legend}</div> */}
+          {/* <div>{legendLabels.diastolic.legend}</div> */}
           {legendLabels && (
             <div className="">
-              <div className=" py-4 mb-4 border-b">
+              <div className=" py-4 mb-4 border-b border-gray-300">
                 <div className="flex items-center">
                   <span className="h-3 w-3 bg-[#E66FD2] rounded-full mr-2"></span>
                   <p className=" text-sm font-bold">
@@ -332,7 +336,7 @@ const LineChart = () => {
                   <>
                     <h2 className="text-[#072635] font-bold text-xl my-2">
                       {" "}
-                      {legendLabels.systolic.maxValue}
+                      {legendLabels.systolic.lastMonthValue}
                     </h2>
                     <p className="flex  gap-1 items-center text-sm text-[#072635]">
                       <span>
@@ -368,7 +372,7 @@ const LineChart = () => {
               ) : (
                 <>
                   <h2 className="text-[#072635] font-bold text-xl my-2">
-                    {legendLabels.diastolic.minValue}
+                    {legendLabels.diastolic.lastMonthValue}
                   </h2>
                   <p className="flex gap-1 items-center text-sm text-[#072635]">
                     <span>
