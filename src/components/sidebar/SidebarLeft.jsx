@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PageLeft from "../pages/PageLeft";
 import { GoSearch } from "react-icons/go";
 import PatientList from "../patients/PatientList";
 import Search from "../input/Search";
+import DataFetcher from "./DataFetcher";
 
 export default function SidebarLeft() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,6 +33,59 @@ export default function SidebarLeft() {
     patient.name.toLowerCase().includes(searchValue.toLowerCase())
   );
 
+
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDataForPosts = async () => {
+      try {
+        const username = 'coalition';
+        const password = 'skills-test';
+        const encodedCredentials = btoa(`${username}:${password}`);
+        
+        const response = await fetch(
+          `https://fedskillstest.coalitiontechnologies.workers.dev`,
+          {
+            headers: {
+              "Authorization": `Basic ${encodedCredentials}`,
+            },
+          }
+        );
+        
+        console.log("Response:", response);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error: Status ${response.status}`);
+        }
+        
+        const postsData = await response.json();
+        setData(postsData);
+        console.log("Data:", postsData);
+
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+        setData(null);
+        console.error("Error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDataForPosts();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+
   return (
     <PageLeft>
       <div className="bg-white shadow-sm rounded-2xl h-full overflow-scroll">
@@ -59,7 +113,7 @@ export default function SidebarLeft() {
             </button>
           </div>
         </div>
-        <PatientList classes="bg-white" data={filteredPatientList} />
+        <PatientList classes="bg-white" data={data} />
       </div>
     </PageLeft>
   );
