@@ -20,3 +20,9 @@
 .scrollbar-visible::-webkit-scrollbar-track {
   background: #f0f0f0;
 }
+.active{
+  background-color: #01F0D0;
+}
+.active:hover{
+  @apply hover:bg-opacity-75;
+}
