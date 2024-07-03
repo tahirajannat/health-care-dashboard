@@ -16,13 +16,13 @@ export default function PatientInfo({
 }) {
     return (
         <div className={`py-4 px-8 ${classes}`}>
-            <div className='text-center flex flex-col'>
+            <div className='text-center flex flex-col items-center'>
                 <img
-                    className='rounded-full w-44 object-cover my-4 mx-auto'
+                    className='rounded-full object-cover my-4 w-40 mx-auto'
                     src={patientProfilePicture}
                     alt={`Portrait of ${patientName}`}
                 />
-                <p className='text-2xl leading-none font-bold my-5'>
+                <p className='text-2xl font-bold leading-none my-5'>
                     {patientName}
                 </p>
             </div>

@@ -8,7 +8,7 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
 import Select from '../select/Select';
@@ -24,9 +24,26 @@ ChartJS.register(
 );
 
 const LineChart = ({ diagnosticHistory }) => {
-    // const chartRef = useRef(null);
+    const [selectedMonth, setSelectedMonth] = useState('Last 6 months');
 
-    const labels = diagnosticHistory.map((entry) => {
+    const handleMonthChange = (selectedMonth) => {
+        setSelectedMonth(selectedMonth);
+    };
+
+    useEffect(() => {}, [selectedMonth]);
+
+    let filteredDiagnosticHistory = diagnosticHistory;
+    if (selectedMonth === 'Last 6 months') {
+        filteredDiagnosticHistory = diagnosticHistory.slice(-6);
+    } else if (selectedMonth === 'Last 12 months') {
+        filteredDiagnosticHistory = diagnosticHistory.slice(-12);
+    } else if (selectedMonth === 'Last 18 months') {
+        filteredDiagnosticHistory = diagnosticHistory.slice(-18);
+    } else if (selectedMonth === 'Last 24 months') {
+        filteredDiagnosticHistory = diagnosticHistory.slice(-24);
+    }
+
+    const labels = filteredDiagnosticHistory.map((entry) => {
         const monthAbbreviation = {
             January: 'Jan',
             February: 'Feb',
@@ -45,10 +62,10 @@ const LineChart = ({ diagnosticHistory }) => {
         return `${monthAbbreviation}, ${entry.year}`;
     });
 
-    const systolicData = diagnosticHistory.map(
+    const systolicData = filteredDiagnosticHistory.map(
         (entry) => entry.blood_pressure.systolic.value
     );
-    const diastolicData = diagnosticHistory.map(
+    const diastolicData = filteredDiagnosticHistory.map(
         (entry) => entry.blood_pressure.diastolic.value
     );
 
@@ -252,7 +269,7 @@ const LineChart = ({ diagnosticHistory }) => {
                             Blood Pressure
                         </h2>
                         <div>
-                            <Select />
+                            <Select selectedMonthChange={handleMonthChange} />
                         </div>
                     </div>
                     <div style={{ height: '270px' }}>
@@ -264,7 +281,6 @@ const LineChart = ({ diagnosticHistory }) => {
                     </div>
                 </div>
                 <div className='col-span-4 '>
-                    {/* <div>{legendLabels.diastolic.legend}</div> */}
                     {legendLabels && (
                         <div className=''>
                             <div className=' py-4 mb-4 border-b border-gray-300'>
@@ -274,30 +290,21 @@ const LineChart = ({ diagnosticHistory }) => {
                                         {legendLabels.systolic.legend}
                                     </p>
                                 </div>
-                                {legendLabels.systolic.maxValue >= 80 ? (
-                                    <>
-                                        <h2 className='text-[#072635] font-bold text-xl my-2'>
-                                            {
-                                                legendLabels.systolic
-                                                    .lastMonthValue
-                                            }
-                                        </h2>
-                                        <p className='flex  gap-1 items-center text-sm text-[#072635]'>
-                                            <span>
-                                                <TiArrowSortedUp className='text-lg' />
-                                            </span>
-                                            {legendLabels.systolic.label}
-                                        </p>
-                                    </>
-                                ) : (
-                                    <>
-                                        <h2>
-                                            {' '}
-                                            {legendLabels.systolic.minValue}
-                                        </h2>
-                                        <p>{legendLabels.systolic.label}</p>
-                                    </>
-                                )}
+                                <h2 className='text-[#072635] font-bold text-xl my-2'>
+                                    {legendLabels.systolic.lastMonthValue}
+                                </h2>
+                                <p className='flex  gap-1 items-center text-sm text-[#072635]'>
+                                    <span>
+                                        {legendLabels.systolic.label ===
+                                        'Lower than Average' ? (
+                                            <TiArrowSortedDown className='text-base text-gray-600 mr-1' />
+                                        ) : legendLabels.systolic.label ===
+                                          'Normal' ? null : (
+                                            <TiArrowSortedUp className='text-base text-gray-600 mr-1' />
+                                        )}
+                                    </span>
+                                    {legendLabels.systolic.label}
+                                </p>
                             </div>
 
                             <div className='flex items-center'>
@@ -306,29 +313,21 @@ const LineChart = ({ diagnosticHistory }) => {
                                     {legendLabels.diastolic.legend}
                                 </p>
                             </div>
-                            {legendLabels.diastolic.maxValue < 80 ? (
-                                <>
-                                    <h2> {legendLabels.diastolic.maxValue}</h2>
-                                    <p className='flex items-center text-sm text-[#072635]'>
-                                        <span>
-                                            <TiArrowSortedDown className='text-lg' />
-                                        </span>
-                                        {legendLabels.diastolic.label}
-                                    </p>
-                                </>
-                            ) : (
-                                <>
-                                    <h2 className='text-[#072635] font-bold text-xl my-2'>
-                                        {legendLabels.diastolic.lastMonthValue}
-                                    </h2>
-                                    <p className='flex gap-1 items-center text-sm text-[#072635]'>
-                                        <span>
-                                            <TiArrowSortedDown className='text-lg' />
-                                        </span>
-                                        {legendLabels.diastolic.label}
-                                    </p>
-                                </>
-                            )}
+                            <h2 className='text-[#072635] font-bold text-xl my-2'>
+                                {legendLabels.diastolic.lastMonthValue}
+                            </h2>
+                            <p className='flex gap-1 items-center text-sm text-[#072635]'>
+                                <span className=''>
+                                    {legendLabels.diastolic.label ===
+                                    'Lower than Average' ? (
+                                        <TiArrowSortedDown className='text-base text-gray-600 mr-1' />
+                                    ) : legendLabels.diastolic.label ===
+                                      'Normal' ? null : (
+                                        <TiArrowSortedUp className='text-base text-gray-600 mr-1' />
+                                    )}
+                                </span>
+                                {legendLabels.diastolic.label}
+                            </p>
                         </div>
                     )}
                 </div>

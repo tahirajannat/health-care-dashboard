@@ -8,7 +8,9 @@ import SidebarRight from '../sidebar/SidebarRight';
 
 export default function PatientMain() {
     const [data, setData] = useState(null);
-    const [selectedPatient, setSelectedPatient] = useState(null);
+    const [selectedPatient, setSelectedPatient] = useState(
+        data ? data[0] : null
+    );
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -34,6 +36,9 @@ export default function PatientMain() {
 
                 const patientData = await response.json();
                 setData(patientData);
+                if (patientData.length > 0) {
+                    setSelectedPatient(patientData[0]);
+                }
 
                 setError(null);
             } catch (err) {
@@ -64,7 +69,7 @@ export default function PatientMain() {
     return (
         <Page>
             <SidebarLeft onPatientSelect={handlePatientSelect} />
-            <div className='col-span-6'>
+            <div className='col-span-6 my-4'>
                 {selectedPatient ? (
                     <div className='xl:grid xl:grid-cols-3 gap-4 bg-white p-6 rounded-xl'>
                         <div className='col-span-3 pb-2'>
@@ -75,36 +80,48 @@ export default function PatientMain() {
                             />
                         </div>
                         <RateCard
-                            classes={'bg-[#E0F3FA] p-4 my-4 xl:my-0'}
+                            classes={'bg-[#E0F3FA] my-4 xl:my-0'}
                             src={'/src/assets/respiratory rate.png'}
                             rateTitle={'Respiratory Rate'}
-                            rateData={
-                                selectedPatient.diagnosis_history[0]
-                                    ?.respiratory_rate.value || 'N/A'
-                            }
+                            rateData={`${
+                                selectedPatient.diagnosis_history[
+                                    selectedPatient.diagnosis_history.length - 1
+                                ]?.respiratory_rate.value
+                            } bpm`}
                             status={
-                                selectedPatient.diagnosis_history[0]
-                                    ?.respiratory_rate.levels || 'N/A'
+                                selectedPatient.diagnosis_history[
+                                    selectedPatient.diagnosis_history.length - 1
+                                ]?.respiratory_rate.levels || 'N/A'
                             }
                         />
                         <RateCard
-                            classes={`bg-[#FFE6E9] p-4 my-4 xl:my-0`}
+                            classes={`bg-[#FFE6E9] my-4 xl:my-0`}
                             src={'/src/assets/temperature.png'}
                             rateTitle={'Temperature'}
-                            rateData={`${selectedPatient.diagnosis_history[0]?.temperature.value}°F`}
+                            rateData={`${
+                                selectedPatient.diagnosis_history[
+                                    selectedPatient.diagnosis_history.length - 1
+                                ]?.temperature.value
+                            }°F`}
                             status={
-                                selectedPatient.diagnosis_history[0]
-                                    ?.temperature.levels || 'N/A'
+                                selectedPatient.diagnosis_history[
+                                    selectedPatient.diagnosis_history.length - 1
+                                ]?.temperature.levels || 'N/A'
                             }
                         />
                         <RateCard
-                            classes={`bg-[#FFE6F1] p-4 my-4 xl:my-0`}
+                            classes={`bg-[#FFE6F1]  my-4 xl:my-0`}
                             src={'/src/assets/HeartBPM.png'}
                             rateTitle={'Heart Rate'}
-                            rateData={`${selectedPatient.diagnosis_history[0]?.heart_rate.value} bpm`}
+                            rateData={`${
+                                selectedPatient.diagnosis_history[
+                                    selectedPatient.diagnosis_history.length - 1
+                                ]?.heart_rate.value
+                            } bpm`}
                             status={
-                                selectedPatient.diagnosis_history[0]?.heart_rate
-                                    .levels || 'N/A'
+                                selectedPatient.diagnosis_history[
+                                    selectedPatient.diagnosis_history.length - 1
+                                ]?.heart_rate.levels || 'N/A'
                             }
                         />
                     </div>

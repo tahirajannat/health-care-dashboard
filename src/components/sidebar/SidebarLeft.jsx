@@ -55,8 +55,8 @@ export default function SidebarLeft({ onPatientSelect }) {
 
     return (
         <PageLeft>
-            <div className='bg-white shadow-sm rounded-2xl h-full overflow-scroll'>
-                <div className='flex justify-between mb-8 p-4'>
+            <div className='bg-white shadow-sm rounded-2xl h-full overflow-hidden mb-4'>
+                <div className='flex justify-between mb-8 p-4 h-8'>
                     <h4 className='text-xl font-bold'>Patients</h4>
                     <div className='text-left relative '>
                         <button
@@ -80,10 +80,13 @@ export default function SidebarLeft({ onPatientSelect }) {
                         </button>
                     </div>
                 </div>
-                <PatientList
-                    data={filteredPatientList}
-                    onPatientSelect={onPatientSelect}
-                />
+                <div className='h-screen overflow-y-scroll'>
+                    {' '}
+                    <PatientList
+                        data={filteredPatientList}
+                        onPatientSelect={onPatientSelect}
+                    />
+                </div>
             </div>
         </PageLeft>
     );

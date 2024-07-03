@@ -7,7 +7,7 @@ export default function LabResults({ classes, selectedPatients }) {
             <div className='flex justify-between p-4'>
                 <h4 className='text-xl font-bold'>Lab Results</h4>
             </div>
-            <div className='h-60 overflow-scroll scrollbar-visible mx-4 my-2'>
+            <div className=' h-72 overflow-scroll scrollbar-visible mx-4 my-2'>
                 {selectedPatients.map((labResult, index) => (
                     <div
                         key={index}

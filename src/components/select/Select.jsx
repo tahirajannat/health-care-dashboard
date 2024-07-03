@@ -1,68 +1,51 @@
-import React, { useState, useEffect } from "react";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
-import { TiArrowSortedDown } from "react-icons/ti";
+import React, { useState } from 'react';
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 
-export default function Select() {
-  const [isHidden, setIsHidden] = useState(false);
-  const [dropdownState, setDropdownState] = useState(false);
-  const [dropdownValue, setDropdownValue] = useState("");
+export default function Select({ selectedMonthChange }) {
+    const [dropdownState, setDropdownState] = useState(false);
+    const [dropdownValue, setDropdownValue] = useState('Last 6 months');
 
-  const handleDropdownClick = () => {
-    setDropdownState(!dropdownState);
-  };
-  const handleSetDropdownValue = (value) => {
-    setDropdownValue(value);
-    setDropdownState(!dropdownState);
-  };
-  return (
-    <div className="container">
-      <div className={``}>
-        <button
-          onClick={handleDropdownClick}
-          className="flex justify-between items-center gap-1 w-50 text-xs text-gray-500"
-        >
-          {dropdownValue === "w-50" ? "w-50" : dropdownValue}
-          <MdOutlineKeyboardArrowDown className="text-lg" />
-        </button>
-        <div
-          className={`absolute bg-[#F4F0FE] pt-1 z-50 ${
-            dropdownState ? "visible" : "hidden"
-          }`}
-        >
-          <div className="">
-            <div
-              className="text-xs  py-0.5" 
-              onClick={() => handleSetDropdownValue("Last 6 months")}
+    const months = [
+        { value: 'Last 6 months' },
+        { value: 'Last 12 months' },
+        { value: 'Last 18 months' },
+        { value: 'Last 24 months' },
+    ];
+
+    const handleDropdownClick = () => {
+        setDropdownState(!dropdownState);
+    };
+
+    const handleSetDropdownValue = (value) => {
+        setDropdownValue(value);
+        setDropdownState(false);
+        selectedMonthChange(value);
+    };
+
+    return (
+        <div className='relative'>
+            <button
+                onClick={handleDropdownClick}
+                className='flex justify-between items-center gap-1 w-50 text-xs text-gray-500 border-none rounded-md px-2 py-1 focus:outline-none focus:ring-0 '
             >
-              Last 6 months
-            </div>
-          </div>
-          <div className="dropdown-item">
+                {dropdownValue}
+                <MdOutlineKeyboardArrowDown className='text-lg' />
+            </button>
             <div
-              className="text-xs py-0.5"
-              onClick={() => handleSetDropdownValue("Last 12 months")}
+                className={`absolute bg-white border border-gray-300 mt-1 rounded-md shadow-lg ${
+                    dropdownState ? 'block' : 'hidden'
+                }`}
             >
-              Last 12 months
+                {months.map((month, index) => (
+                    <div
+                        key={index}
+                        className='text-xs py-2 px-3 hover:bg-gray-100 cursor-pointer'
+                        onClick={() => handleSetDropdownValue(month.value)}
+                    >
+                        {month.value}
+                    </div>
+                ))}
             </div>
-          </div>
-          <div className="dropdown-item">
-            <div
-              className="text-xs py-0.5"
-              onClick={() => handleSetDropdownValue("Last 16 months")}
-            >
-              Last 16 months
-            </div>
-          </div>
-          <div className="dropdown-item">
-            <div
-              className="text-xs py-0.5"
-              onClick={() => handleSetDropdownValue("Last 24 months")}
-            >
-              Last 24 months
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
