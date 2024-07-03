@@ -1,14 +1,12 @@
 import React from 'react';
-import Page from '../../components/pages/Page';
+import Page from '../pages/Page';
 
-const OverviewMain = () => {
+export default function ScheduleMain() {
     return (
         <Page classes={'border outline-dotted	h-screen '}>
             <div className='col-span-12 flex flex-col items-center text-center mx-auto'>
-                <h2 className='font-bold text-base my-6'>Overview Page</h2>
+                <h2 className='font-bold text-base my-6'>Schedule Page</h2>
             </div>
         </Page>
     );
-};
-
-export default OverviewMain;
+}

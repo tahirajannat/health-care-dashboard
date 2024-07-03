@@ -1,16 +1,9 @@
 import React, { useState } from 'react';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
-
+import { months } from '../../../src/utility/data';
 export default function Select({ selectedMonthChange }) {
     const [dropdownState, setDropdownState] = useState(false);
     const [dropdownValue, setDropdownValue] = useState('Last 6 months');
-
-    const months = [
-        { value: 'Last 6 months' },
-        { value: 'Last 12 months' },
-        { value: 'Last 18 months' },
-        { value: 'Last 24 months' },
-    ];
 
     const handleDropdownClick = () => {
         setDropdownState(!dropdownState);

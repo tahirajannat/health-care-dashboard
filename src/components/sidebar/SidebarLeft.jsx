@@ -9,6 +9,7 @@ export default function SidebarLeft({ onPatientSelect }) {
     const [patientList, setPatientList] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [filteredPatientList, setFilteredPatientList] = useState([]);
+    const [selectedPatient, setSelectedPatient] = useState(null);
 
     useEffect(() => {
         const fetchPatientList = async () => {
@@ -33,6 +34,11 @@ export default function SidebarLeft({ onPatientSelect }) {
                 const data = await response.json();
                 setPatientList(data);
                 setFilteredPatientList(data);
+                if (data.length > 0) {
+                    const firstPatient = data[3];
+                    setSelectedPatient(firstPatient);
+                    onPatientSelect(firstPatient);
+                }
             } catch (err) {
                 console.error('Error:', err);
             }
@@ -51,6 +57,11 @@ export default function SidebarLeft({ onPatientSelect }) {
 
     const handleToggle = () => {
         setIsOpen(!isOpen);
+    };
+
+    const handlePatientSelectInternal = (patient) => {
+        setSelectedPatient(patient);
+        onPatientSelect(patient); // Call the passed prop function
     };
 
     return (
@@ -81,10 +92,10 @@ export default function SidebarLeft({ onPatientSelect }) {
                     </div>
                 </div>
                 <div className='h-screen overflow-y-scroll'>
-                    {' '}
                     <PatientList
                         data={filteredPatientList}
-                        onPatientSelect={onPatientSelect}
+                        onPatientSelect={handlePatientSelectInternal}
+                        selectedPatient={selectedPatient}
                     />
                 </div>
             </div>

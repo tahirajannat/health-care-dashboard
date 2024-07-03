@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Loader from '../common/Loader';
 import DiagnosticList from '../diagonisis/DiagnosticList';
 import LineChart from '../diagonisis/LineChart';
 import RateCard from '../diagonisis/RateCard';
@@ -41,25 +42,29 @@ export default function PatientMain() {
                 }
 
                 setError(null);
+                setLoading(false);
             } catch (err) {
                 setError(err.message);
                 setData(null);
-                console.error('Error:', err);
-            } finally {
                 setLoading(false);
+
+                console.error('Error:', err);
             }
         };
 
-        fetchPatientList();
+        const timer = setTimeout(() => {
+            fetchPatientList();
+        }, 1000);
+
+        return () => clearTimeout(timer);
     }, []);
 
     const handlePatientSelect = (patient) => {
         setSelectedPatient(patient);
     };
-    console.log('first patient selected', selectedPatient);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <Loader />;
     }
 
     if (error) {
