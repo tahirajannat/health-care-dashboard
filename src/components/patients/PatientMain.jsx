@@ -69,7 +69,7 @@ export default function PatientMain() {
     return (
         <Page>
             <SidebarLeft onPatientSelect={handlePatientSelect} />
-            <div className='col-span-6 my-4'>
+            <div className='col-span-6 mt-4'>
                 {selectedPatient ? (
                     <div className='xl:grid xl:grid-cols-3 gap-4 bg-white p-6 rounded-xl'>
                         <div className='col-span-3 pb-2'>

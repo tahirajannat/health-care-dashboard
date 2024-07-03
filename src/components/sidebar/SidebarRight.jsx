@@ -23,7 +23,7 @@ export default function SidebarRight({ selectedPatient }) {
                     />
                 )}
             </div>
-            <div className='bg-white shadow-sm rounded-2xl my-8'>
+            <div className='bg-white shadow-sm rounded-2xl mt-8 '>
                 {selectedPatient && (
                     <LabResults
                         classes={'hover:bg-gray-100 p-4 rounded-lg'}

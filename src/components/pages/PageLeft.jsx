@@ -1,10 +1,5 @@
-import React from 'react'
+import React from 'react';
 
-export default function PageLeft ({children}) {
-  return (
-    <div className='col-span-3 my-4 xl:py-0'>
-{children}
-    </div>
-  )
+export default function PageLeft({ children }) {
+    return <div className='col-span-3 xl:py-0'>{children}</div>;
 }
-
